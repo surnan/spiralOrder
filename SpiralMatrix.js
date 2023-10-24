@@ -4,6 +4,7 @@ matrix = [
   [7, 8, 9]
 ]
 
+
 class CoordinateObject {
   constructor(value, row, col) {
     this.value = value;
@@ -36,46 +37,7 @@ var currentDirection = new DirectionsObject();
 var currentCoordinate = new CoordinateObject(matrix[0][0], 0, 0);
 answer.push(currentCoordinate);
 
-function spiralOrder(matrix) {
-
-  let temp = currentDirection.getDirection();
-
-  switch (temp) {
-    case 'EAST':
-      console.log('going east!!');
-      const checkBounds     = checkCoordBounds(currentCoordinate.row, currentCoordinate.col+1);
-      const checkDuplicate  = checkNoDuplicate(currentCoordinate.row, currentCoordinate.col+1);
-      turnRightOrPush(checkBounds, checkDuplicate, currentCoordinate.row, currentCoordinate.col+1);
-      break;
-    case 'SOUTH':
-      console.log('going south!!');
-      checkCoordBounds(currentCoordinate.row + 1, currentCoordinate.col);
-      checkNoDuplicate(currentCoordinate.row + 1, currentCoordinate.col);
-      turnRightOrPush(checkBounds, checkDuplicate, currentCoordinate.row, currentCoordinate.col+1);
-      break;
-    case 'WEST':
-      console.log('going west!!');
-      checkCoordBounds(currentCoordinate.row, currentCoordinate.col-1);
-      checkNoDuplicate(currentCoordinate.row, currentCoordinate.col-1);
-      turnRightOrPush(checkBounds, checkDuplicate, currentCoordinate.row, currentCoordinate.col+1);
-      break;
-    case 'NORTH':
-      console.log('going north!!');
-      checkCoordBounds(currentCoordinate.row - 1, currentCoordinate.col);
-      checkNoDuplicate(currentCoordinate.row - 1, currentCoordinate.col);
-      turnRightOrPush(checkBounds, checkDuplicate, currentCoordinate.row, currentCoordinate.col+1);
-      break;
-  }
-}
-
-function turnRightOrPush(checkBounds, checkDuplicate, row, col){
-  console.log('\n\ncheckBounds', checkBounds);
-  console.log('checkDuplicate', checkDuplicate);
-  console.log('row', row);
-  console.log('col', col);
-}
-
-function checkCoordBounds(newRow, newCol){
+function checkCoordBounds(newRow, newCol) {
   if ((newRow < boundary.minRow) || (newRow > boundary.maxRow)) {
     return false;
   }
@@ -86,12 +48,89 @@ function checkCoordBounds(newRow, newCol){
   return true;
 }
 
-function checkNoDuplicate(newRow, newCol){
-  let duplicate = false;
+function checkNoDuplicate(newRow, newCol) {
+  let duplicate = true;
   answer.forEach((ele) => {
-    if ((ele.row === newRow) && (ele.col === newCol)) {duplicate = true;}
+    if ((ele.row === newRow) && (ele.col === newCol)) { duplicate = false; }
   });
   return duplicate;
 }
+
+function spiralOrder(matrix) {
+
+  let temp = currentDirection.getDirection();
+  let checkBounds;
+  let checkDuplicate;
+
+  for (let i = 0; i < 5; i++) {
+
+    temp = currentDirection.getDirection();
+
+    switch (temp) {
+      case 'EAST':
+        console.log('going east!!');
+        checkBounds     = checkCoordBounds(currentCoordinate.row, currentCoordinate.col + 1);
+        checkDuplicate  = checkNoDuplicate(currentCoordinate.row, currentCoordinate.col + 1);
+        if (tryPush(checkBounds, checkDuplicate, currentCoordinate.row, currentCoordinate.col + 1)) {
+          console.log('PUSH!!')
+        } else {
+          currentDirection.turnRight();
+          console.log('Turn Right :(');
+        }
+        break;
+      case 'SOUTH':
+        console.log('going south!!');
+        checkBounds     = checkCoordBounds(currentCoordinate.row + 1, currentCoordinate.col);
+        checkDuplicate  = checkNoDuplicate(currentCoordinate.row + 1, currentCoordinate.col);
+        if (tryPush(checkBounds, checkDuplicate, currentCoordinate.row, currentCoordinate.col + 1)) {
+          console.log('PUSH!!')
+        } else {
+          currentDirection.turnRight();
+          console.log('Turn Right :(');
+        }
+        break;
+      case 'WEST':
+        console.log('going west!!');
+        checkBounds     = checkCoordBounds(currentCoordinate.row, currentCoordinate.col - 1);
+        checkDuplicate  = checkNoDuplicate(currentCoordinate.row, currentCoordinate.col - 1);
+        if (tryPush(checkBounds, checkDuplicate, currentCoordinate.row, currentCoordinate.col + 1)) {
+          console.log('PUSH!!')
+        } else {
+          currentDirection.turnRight();
+          console.log('Turn Right :(');
+        }
+        break;
+      case 'NORTH':
+        console.log('going north!!');
+        checkBounds     = checkCoordBounds(currentCoordinate.row - 1, currentCoordinate.col);
+        checkDuplicate  = checkNoDuplicate(currentCoordinate.row - 1, currentCoordinate.col);
+        if (tryPush(checkBounds, checkDuplicate, currentCoordinate.row, currentCoordinate.col + 1)) {
+          console.log('PUSH!!')
+        } else {
+          currentDirection.turnRight();
+          console.log('Turn Right :(');
+        }
+        break;
+    }
+    console.log('answer', answer, "\n\n\n");
+  }
+}
+
+
+
+function tryPush(checkBounds, checkDuplicate, row, col) {
+  // console.log('\n\ncheckBounds', checkBounds);
+  // console.log('checkDuplicate', checkDuplicate);
+  // console.log('row', row);
+  // console.log('col', col);
+
+  if (checkBounds && checkDuplicate) {
+    let temp = new CoordinateObject(matrix[row][col], row, col);
+    answer.push(temp);
+    return true
+  }
+  return false;
+}
+
 
 spiralOrder(matrix);
