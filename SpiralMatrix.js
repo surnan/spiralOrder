@@ -12,7 +12,7 @@ class CoordinateObject {
   }
 }
 
-class Boundary {
+class BoundaryObject {
   constructor(matrix) {
     this.minRow = 0;
     this.minCol = 0;
@@ -21,7 +21,7 @@ class Boundary {
   }
 }
 
-class Directions {
+class DirectionsObject {
   constructor() {
     this.moving = ["EAST", "SOUTH", "WEST", "NORTH"]
     this.movingIndex = 0;
@@ -32,8 +32,8 @@ class Directions {
 }
 
 var answer = [];
-var boundary = new Boundary(matrix);
-var currentDirection = new Directions();
+var boundary = new BoundaryObject(matrix);
+var currentDirection = new DirectionsObject();
 var currentCoordinate = new CoordinateObject(matrix[0][0], 0, 0);
 answer.push(currentCoordinate);
 
