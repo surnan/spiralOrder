@@ -4,7 +4,6 @@ matrix = [
   [9, 10, 11, 12]
 ]
 
-
 function Coordinate(value, row, col) {
   this.value = value;
   this.row = row;
@@ -13,17 +12,16 @@ function Coordinate(value, row, col) {
 
 const borderLimit = {
   minCol: 0,
-  maxCol: matrix[0].length - 1,
   minRow: 0,
+  maxCol: matrix[0].length - 1,
   maxRow: matrix.length - 1
 }
 
 const path = {
-  direction: ['EAST', 'SOUTH', 'WEST', 'NORTH'],
+  direction: ['EAST', 'SOUTH', 'WEST', 'NORTH'], //Readability.  Not used.
   index: 0
 }
 path.turnRight = function () { this.index = (this.index + 1) % 4; }
-path.getDirection = function () { return this.direction[this.index]; }
 path.next = function () {
   switch (this.index) {
     case 0: return { row: 0, col: 1 };
@@ -33,62 +31,51 @@ path.next = function () {
   }
 }
 
-let answer = [];
-let currentRowCol = new Coordinate(matrix[0][0], 0, 0);
+function checkDuplicate(rowCol) {
+  const newRow = rowCol.row + currentRowCol.row;
+  const newCol = rowCol.col + currentRowCol.col;
 
-spiralOrder(matrix);
-
-
-function spiralOrder(matrix) {
-
-  answer.push(currentRowCol);
-
-  let nextRowCol = path.next();
-
-
-  for (let i = 0; answer.length < (matrix.length * matrix[0].length); i++) {
-    doSomething(path.next());
-  }
-  console.log("ANSWER");
-  console.log(answer);
-}
-
-function doSomething(rowCol) {
-  let myChecker = checkBorderLimits(rowCol);
-  let noDuplicate = checkAnswerForDuplicate(rowCol);
-  if (myChecker && noDuplicate) {
-    pushAnswerUpdatePath(rowCol);
-  } else {
-    path.turnRight();
-  }
-}
-
-function checkAnswerForDuplicate(rowCol) {
+  //'return' won't break function out of FOREACH()
   for (let i = 0; i < answer.length - 1; i++) {
-    if ((answer[i].row === currentRowCol.row + rowCol.row) && (answer[i].col === currentRowCol.col + rowCol.col)) {
+    if ((answer[i].row === newRow) && (answer[i].col === newCol)) {
       return false;
     }
   }
   return true;
 }
 
+function checkBounds(rowCol) {
+  let newCol = currentRowCol.col + rowCol.col;
+  let newRow = currentRowCol.row + rowCol.row;
 
-function checkBorderLimits(rowCol) {
-  if ((currentRowCol.row + rowCol.row < borderLimit.minRow) || (currentRowCol.row + rowCol.row > borderLimit.maxRow)) {
+  if ((newRow < borderLimit.minRow) || (newRow > borderLimit.maxRow)) {
     return false;
   }
-  if ((currentRowCol.col + rowCol.col < borderLimit.minCol) || (currentRowCol.col + rowCol.col > borderLimit.maxCol)) {
+  if ((newCol < borderLimit.minCol) || (newCol > borderLimit.maxCol)) {
     return false;
   }
   return true;
 }
 
 function pushAnswerUpdatePath(rowCol) {
-  const row = rowCol.row + currentRowCol.row;
-  const col = rowCol.col + currentRowCol.col;
-
-  let temp = new Coordinate(matrix[row][col], row, col);
-  answer.push(temp);
-
-  currentRowCol = temp;
+  const newRow = rowCol.row + currentRowCol.row;
+  const newCol = rowCol.col + currentRowCol.col;
+  currentRowCol = new Coordinate(matrix[newRow][newCol], newRow, newCol);
+  answer.push(currentRowCol);
 }
+
+function spiralOrder(matrix) {
+  answer.push(currentRowCol);
+  for (let i = 0; answer.length < (matrix.length * matrix[0].length); i++) {
+    // const rowCol = path.next();
+    (checkBounds(path.next())&& checkDuplicate(path.next())) ?
+                      pushAnswerUpdatePath(path.next()) : path.turnRight();
+  }
+  console.log("ANSWER");
+  console.log(answer);
+}
+
+//MAIN ()
+let answer = [];
+let currentRowCol = new Coordinate(matrix[0][0], 0, 0);
+spiralOrder(matrix);
