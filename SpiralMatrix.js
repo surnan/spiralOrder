@@ -45,8 +45,16 @@ function checkDuplicate(rowCol, answer) {
 }
 
 function checkBounds(rowCol) {
+  // let newCol = currentRowCol.col + rowCol.col;
+  // let newRow = currentRowCol.row + rowCol.row;
   let newCol = currentRowCol.col + rowCol.col;
   let newRow = currentRowCol.row + rowCol.row;
+
+
+
+
+
+
 
   if ((newRow < borderLimit.minRow) || (newRow > borderLimit.maxRow)) {
     return false;
@@ -58,6 +66,14 @@ function checkBounds(rowCol) {
 }
 
 function pushAnswerUpdatePath(rowCol, answer) {
+  // const newRow = rowCol.row + currentRowCol.row;
+  // const newCol = rowCol.col + currentRowCol.col;
+  // currentRowCol = new Coordinate(matrix[newRow][newCol], newRow, newCol);
+  // answer.push(currentRowCol);
+
+
+
+
   const newRow = rowCol.row + currentRowCol.row;
   const newCol = rowCol.col + currentRowCol.col;
   currentRowCol = new Coordinate(matrix[newRow][newCol], newRow, newCol);
@@ -67,8 +83,20 @@ function pushAnswerUpdatePath(rowCol, answer) {
 function spiralOrder(matrix) {
   let answer = [];
 
+
+
+  // answer.push(currentRowCol);
   answer.push(currentRowCol);
-  for (let i = 0; answer.length < (matrix.length * matrix[0].length); i++) {
+
+
+
+
+
+
+
+
+  // for (let i = 0; answer.length < (matrix.length * matrix[0].length); i++) {
+    for (let i = 0; i < 15; i++) {
     (checkBounds(path.next())&& checkDuplicate(path.next(), answer)) ?
                       pushAnswerUpdatePath(path.next(), answer) : path.turnRight();
   }
@@ -77,6 +105,5 @@ function spiralOrder(matrix) {
 }
 
 //MAIN ()
-// let answer = [];
 let currentRowCol = new Coordinate(matrix[0][0], 0, 0);
 spiralOrder(matrix);
