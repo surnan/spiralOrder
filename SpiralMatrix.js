@@ -46,21 +46,68 @@ function spiralOrder(matrix) {
 
 
   for (let i = 0; i < 3; i++) {
-    console.log('answer = ', answer, "\n");
+    switch (path.getDirection()) {
+      case 'EAST':
+        console.log('EAST!');
+        doSomething(path.next());
+        break;
+      case 'SOUTH':
+        console.log('SOUTH!');
+        doSomething(path.next());
+        break;
+      case 'WEST':
+        console.log('WEST!');
+        doSomething(path.next());
+        break;
+      case 'NORTH':
+        console.log('NORTH!');
+        doSomething(path.next());
+        break;
+    }
+    console.log('i = ' + i + '    answer = ', answer, "\n");
 
-    console.log("1 - path.next() ->", path.next(),path.getDirection(), "\n");
+    // console.log("1 - path.next() ->", path.next(),path.getDirection(), "\n");
 
-    path.turnRight();
-    console.log("2 - path.next() ->", path.next(),path.getDirection(), "\n");
+    // path.turnRight();
+    // console.log("2 - path.next() ->", path.next(),path.getDirection(), "\n");
 
-    path.turnRight();
-    console.log("3 - path.next() ->", path.next(), path.getDirection(), "\n");
+    // path.turnRight();
+    // console.log("3 - path.next() ->", path.next(), path.getDirection(), "\n");
 
-    path.turnRight();
-    console.log("4 - path.next() ->", path.next(), path.getDirection(), "\n");
+    // path.turnRight();
+    // console.log("4 - path.next() ->", path.next(), path.getDirection(), "\n");
   }
 }
 
+function doSomething(rowCol){
+  let myChecker = checkBorderLimits(rowCol);
+  if (myChecker){
+    pushAnswerUpdatePath(rowCol);
+  } else {
+    path.turnRight();
+  }
+}
+
+function pushAnswerUpdatePath(rowCol){
+  const row = rowCol.row + currentRowCol.row;
+  const col = rowCol.col + currentRowCol.col;
+
+  let temp = new Coordinate(matrix[row][col], row, col);
+  answer.push(temp);
+
+  currentRowCol = temp;
+}
+
+function checkBorderLimits(rowCol) {
+  // if ((currentRowCol.row + coord.row < borderLimit.minRow) || (currentRowCol.row + coord.row > borderLimit.maxRow)) {
+  //   return false;
+  // }
+
+  // if ((currentRowCol.col + coord.col < borderLimit.minCol) || (currentRowCol.col + coord.col > borderLimit.maxCol)) {
+  //   return false;
+  // }
+  return true;
+}
 
 
 // function checkCoordBounds(newRow, newCol) {
