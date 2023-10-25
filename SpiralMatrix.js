@@ -12,9 +12,9 @@ function Coordinate(value, row, col) {
 
 const borderLimit = {
   minCol: 0,
-  maxCol: matrix[0].length,
+  maxCol: matrix[0].length -1,
   minRow: 0,
-  maxRow: matrix.length
+  maxRow: matrix.length -1
 }
 
 const path = {
@@ -45,7 +45,7 @@ function spiralOrder(matrix) {
   let nextRowCol = path.next();
 
 
-  for (let i = 0; i < 3; i++) {
+  for (let i = 0; i < 11; i++) {
     switch (path.getDirection()) {
       case 'EAST':
         console.log('EAST!');
@@ -65,17 +65,6 @@ function spiralOrder(matrix) {
         break;
     }
     console.log('i = ' + i + '    answer = ', answer, "\n");
-
-    // console.log("1 - path.next() ->", path.next(),path.getDirection(), "\n");
-
-    // path.turnRight();
-    // console.log("2 - path.next() ->", path.next(),path.getDirection(), "\n");
-
-    // path.turnRight();
-    // console.log("3 - path.next() ->", path.next(), path.getDirection(), "\n");
-
-    // path.turnRight();
-    // console.log("4 - path.next() ->", path.next(), path.getDirection(), "\n");
   }
 }
 
@@ -88,6 +77,21 @@ function doSomething(rowCol){
   }
 }
 
+function checkBorderLimits(rowCol) {
+
+  if ((currentRowCol.row + rowCol.row < borderLimit.minRow) || (currentRowCol.row + rowCol.row > borderLimit.maxRow)) {
+    console.log('false-1');
+    return false;
+  }
+
+  if ((currentRowCol.col + rowCol.col < borderLimit.minCol) || (currentRowCol.col + rowCol.col > borderLimit.maxCol)) {
+    console.log('false-2');
+    return false;
+  }
+  console.log('true');
+  return true;
+}
+
 function pushAnswerUpdatePath(rowCol){
   const row = rowCol.row + currentRowCol.row;
   const col = rowCol.col + currentRowCol.col;
@@ -96,17 +100,6 @@ function pushAnswerUpdatePath(rowCol){
   answer.push(temp);
 
   currentRowCol = temp;
-}
-
-function checkBorderLimits(rowCol) {
-  // if ((currentRowCol.row + coord.row < borderLimit.minRow) || (currentRowCol.row + coord.row > borderLimit.maxRow)) {
-  //   return false;
-  // }
-
-  // if ((currentRowCol.col + coord.col < borderLimit.minCol) || (currentRowCol.col + coord.col > borderLimit.maxCol)) {
-  //   return false;
-  // }
-  return true;
 }
 
 
