@@ -25,10 +25,10 @@ path.turnRight = function () { this.index = (this.index + 1) % 4; }
 path.getDirection = function () { return this.direction[this.index]; }
 path.next = function () {
   switch (this.index) {
-    case 0: return {row: 0, col: 1};
-    case 1: return {row: 1, col: 0};
-    case 2: return {row: 0, col: -1};
-    case 3: return {row: -1, col: 0};
+    case 0: return { row: 0, col: 1 };
+    case 1: return { row: 1, col: 0 };
+    case 2: return { row: 0, col: -1 };
+    case 3: return { row: -1, col: 0 };
   }
 }
 
@@ -41,41 +41,24 @@ spiralOrder(matrix);
 function spiralOrder(matrix) {
 
   answer.push(currentRowCol);
-  // let newCoordinate = new Coordinate
 
-  console.log('answer = ', answer, "\n");
-  console.log("1 - path.next() ->", path.next());
-  console.log("path.direction() ->", path.getDirection());
-
-  path.turnRight();
-  console.log("2 - path.next() ->", path.next());
-  console.log("path.direction() ->", path.getDirection());
-
-  path.turnRight();
-  console.log("3 - path.next() ->", path.next());
-  console.log("path.direction() ->", path.getDirection());
-
-  path.turnRight();
-  console.log("4 - path.next() ->", path.next());
-  console.log("path.direction() ->", path.getDirection());
+  let nextRowCol = path.next();
 
 
+  for (let i = 0; i < 3; i++) {
+    console.log('answer = ', answer, "\n");
 
+    console.log("1 - path.next() ->", path.next(),path.getDirection(), "\n");
 
+    path.turnRight();
+    console.log("2 - path.next() ->", path.next(),path.getDirection(), "\n");
 
+    path.turnRight();
+    console.log("3 - path.next() ->", path.next(), path.getDirection(), "\n");
 
-
-
-  switch (currentRowCol) {
-
-
-
-
+    path.turnRight();
+    console.log("4 - path.next() ->", path.next(), path.getDirection(), "\n");
   }
-
-
-
-
 }
 
 
