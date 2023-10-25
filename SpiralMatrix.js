@@ -12,9 +12,9 @@ function Coordinate(value, row, col) {
 
 const borderLimit = {
   minCol: 0,
-  maxCol: matrix[0].length -1,
+  maxCol: matrix[0].length - 1,
   minRow: 0,
-  maxRow: matrix.length -1
+  maxRow: matrix.length - 1
 }
 
 const path = {
@@ -45,7 +45,7 @@ function spiralOrder(matrix) {
   let nextRowCol = path.next();
 
 
-  for (let i = 0; i < 11; i++) {
+  for (let i = 0; i < 12; i++) {
     switch (path.getDirection()) {
       case 'EAST':
         console.log('EAST!');
@@ -68,31 +68,40 @@ function spiralOrder(matrix) {
   }
 }
 
-function doSomething(rowCol){
+function doSomething(rowCol) {
   let myChecker = checkBorderLimits(rowCol);
-  if (myChecker){
+  let noDuplicate = checkAnswerForDuplicate(rowCol);
+  // console.log('myChecker: ', myChecker, '    noDuplicate: ', noDuplicate);
+  if (myChecker && noDuplicate) {
     pushAnswerUpdatePath(rowCol);
   } else {
     path.turnRight();
   }
 }
 
-function checkBorderLimits(rowCol) {
-
-  if ((currentRowCol.row + rowCol.row < borderLimit.minRow) || (currentRowCol.row + rowCol.row > borderLimit.maxRow)) {
-    console.log('false-1');
-    return false;
+function checkAnswerForDuplicate(rowCol) {
+  // console.log ('\n\n\n===========================\n');
+  for (let i = 0; i < answer.length - 1; i++) {
+    // console.log('currentRowCol --->  ', currentRowCol, '   answer[i] ---> ', answer[i]);
+    if ((answer[i].row === currentRowCol.row + rowCol.row ) && (answer[i].col === currentRowCol.col + rowCol.col)) {
+      return false;
+    }
   }
-
-  if ((currentRowCol.col + rowCol.col < borderLimit.minCol) || (currentRowCol.col + rowCol.col > borderLimit.maxCol)) {
-    console.log('false-2');
-    return false;
-  }
-  console.log('true');
   return true;
 }
 
-function pushAnswerUpdatePath(rowCol){
+
+function checkBorderLimits(rowCol) {
+  if ((currentRowCol.row + rowCol.row < borderLimit.minRow) || (currentRowCol.row + rowCol.row > borderLimit.maxRow)) {
+    return false;
+  }
+  if ((currentRowCol.col + rowCol.col < borderLimit.minCol) || (currentRowCol.col + rowCol.col > borderLimit.maxCol)) {
+    return false;
+  }
+  return true;
+}
+
+function pushAnswerUpdatePath(rowCol) {
   const row = rowCol.row + currentRowCol.row;
   const col = rowCol.col + currentRowCol.col;
 
